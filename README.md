@@ -26,6 +26,6 @@ or download package manually:
 * Unzip in Magento root folder
 * Clean cache
 
-## Example of how to associate simple products to configurable/grouped product
+## How to associate simple products to configurable/grouped product
 
-I wrote an article on my blog for full extension overview, [click here](http://www.johannreinke.com/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
+I wrote an article for this, [click here](http://www.johannreinke.com/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
