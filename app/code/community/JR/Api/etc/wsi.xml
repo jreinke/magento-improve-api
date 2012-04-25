@@ -8,9 +8,21 @@
              targetNamespace="urn:{{var wsdl.name}}">
     <wsdl:types>
         <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:{{var wsdl.name}}">
+            <xsd:complexType name="complexMultiFilter">
+                <xsd:sequence>
+                    <xsd:element name="key" type="xsd:string" />
+                    <xsd:element name="value" type="typens:associativeArray" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="complexMultiArray">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="complexObjectArray" type="typens:complexMultiFilter" />
+                </xsd:sequence>
+            </xsd:complexType>
             <xsd:complexType name="catalogProductCreateEntity">
                 <xsd:sequence>
                     <xsd:element name="associated_skus" type="typens:ArrayOfString" minOccurs="0" />
+                    <xsd:element name="price_changes" type="typens:complexMultiArray" minOccurs="0" />
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:schema>

@@ -69,7 +69,15 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
 
         if (property_exists($productData, 'associated_skus')) {
             $simpleSkus = (array) $productData->associated_skus;
-            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus);
+            $priceChanges = array();
+            if (property_exists($productData, 'price_changes')) {
+                if (key($productData->price_changes) === 0) {
+                    $priceChanges = $productData->price_changes[0];
+                } else {
+                    $priceChanges = $productData->price_changes;
+                }
+            }
+            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
         }
     }
 }

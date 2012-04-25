@@ -7,9 +7,10 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
     /**
      * @param Mage_Catalog_Model_Product $product
      * @param array $simpleSkus
+     * @param array $priceChanges
      * @return JR_Api_Helper_Catalog_Product
      */
-    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus)
+    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array())
     {
         if (!empty($simpleSkus)) {
             $usedProductIds = Mage::getModel('catalog/product')->getCollection()
@@ -18,7 +19,7 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->getAllIds();
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
-                    $this->_initConfigurableAttributesData($product, $usedProductIds);
+                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges);
                 } elseif ($product->isGrouped()) {
                     $relations = array_fill_keys($usedProductIds, array('qty' => 0, 'position' => 0));
                     $product->setGroupedLinkData($relations);
@@ -98,9 +99,10 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
     /**
      * @param Mage_Catalog_Model_Product $mainProduct
      * @param array $simpleProductIds
+     * @param array $priceChanges
      * @return JR_Api_Helper_Catalog_Product
      */
-    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds)
+    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array())
     {
         if (!$mainProduct->isConfigurable() || empty($simpleProductIds)) {
             return $this;
@@ -129,17 +131,32 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         if (count($products)) {
             foreach ($attributesData as &$attribute) {
                 $attribute['label'] = $attribute['frontend_label'];
+                $attributeCode = $attribute['attribute_code'];
                 foreach ($products as $product) {
                     $product->load($product->getId());
-                    $optionId = $product->getData($attribute['attribute_code']);
+                    $optionId = $product->getData($attributeCode);
+                    $isPercent = 0;
+                    $priceChange = 0;
+                    if (!empty($priceChanges) && isset($priceChanges[$attributeCode])) {
+                        $optionText = $product->getResource()
+                            ->getAttribute($attribute['attribute_code'])
+                            ->getSource()
+                            ->getOptionText($optionId);
+                        if (isset($priceChanges[$attributeCode][$optionText])) {
+                            if (false !== strpos($priceChanges[$attributeCode][$optionText], '%')) {
+                                $isPercent = 1;
+                            }
+                            $priceChange = preg_replace('/[^0-9\.,-]/', '', $priceChanges[$attributeCode][$optionText]);
+                            $priceChange = (float) str_replace(',', '.', $priceChange);
+                        }
+                    }
                     $attribute['values'][$optionId] = array(
                         'value_index' => $optionId,
-                        'is_percent' => 0,
-                        'pricing_value' => $product->getPrice() - $mainProduct->getPrice(),
+                        'is_percent' => $isPercent,
+                        'pricing_value' => $priceChange,
                     );
                 }
             }
-
             $mainProduct->setConfigurableAttributesData($attributesData);
         }
 
