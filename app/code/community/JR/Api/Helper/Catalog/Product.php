@@ -10,7 +10,7 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
      * @param array $priceChanges
      * @return JR_Api_Helper_Catalog_Product
      */
-    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array())
+    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array(), $configAttributes = array())
     {
         if (!empty($simpleSkus)) {
             $usedProductIds = Mage::getModel('catalog/product')->getCollection()
@@ -18,8 +18,9 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                 ->getAllIds();
             if (!empty($usedProductIds)) {
+
                 if ($product->isConfigurable()) {
-                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges);
+                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configAttributes);
                 } elseif ($product->isGrouped()) {
                     $relations = array_fill_keys($usedProductIds, array('qty' => 0, 'position' => 0));
                     $product->setGroupedLinkData($relations);
@@ -102,7 +103,7 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
      * @param array $priceChanges
      * @return JR_Api_Helper_Catalog_Product
      */
-    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array())
+    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array(), $configAttributes = array())
     {
         if (!$mainProduct->isConfigurable() || empty($simpleProductIds)) {
             return $this;
@@ -117,8 +118,9 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
             // Auto generation if configurable product has no attribute
             $attributeIds = array();
             foreach ($productType->getSetAttributes() as $attribute) {
-                if ($productType->canUseAttribute($attribute)) {
+                if ($productType->canUseAttribute($attribute) && in_array($attribute->getName(), $configAttributes)) {
                     $attributeIds[] = $attribute->getAttributeId();
+                } else {
                 }
             }
             $productType->setUsedProductAttributeIds($attributeIds);
