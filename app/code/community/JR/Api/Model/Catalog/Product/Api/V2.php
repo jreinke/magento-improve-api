@@ -16,6 +16,8 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
     {
         /* @var $product Mage_Catalog_Model_Product */
 
+        $configAttributes = array();
+        
         if (property_exists($productData, 'categories')) {
             $categoryIds = Mage::helper('jr_api/catalog_product')
                 ->getCategoryIdsByNames((array) $productData->categories);
@@ -27,6 +29,12 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
         if (property_exists($productData, 'additional_attributes')) {
             $singleDataExists = property_exists((object) $productData->additional_attributes, 'single_data');
             $multiDataExists = property_exists((object) $productData->additional_attributes, 'multi_data');
+            
+            $configAttributesExists = property_exists((object) $productData->additional_attributes, 'config_attributes');
+            if ($configAttributesExists) {
+                $configAttributes = explode(',', $productData->additional_attributes['config_attributes']);
+            }
+            
             if ($singleDataExists || $multiDataExists) {
                 if ($singleDataExists) {
                     foreach ($productData->additional_attributes->single_data as $_attribute) {
@@ -77,7 +85,7 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
                     $priceChanges = $productData->price_changes;
                 }
             }
-            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
+            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges, $configAttributes);
         }
     }
 }

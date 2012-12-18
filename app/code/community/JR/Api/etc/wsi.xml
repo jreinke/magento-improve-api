@@ -22,6 +22,7 @@
             <xsd:complexType name="catalogProductCreateEntity">
                 <xsd:sequence>
                     <xsd:element name="associated_skus" type="typens:ArrayOfString" minOccurs="0" />
+                    <xsd:element name="config_attributes" type="typens:ArrayOfString" minOccurs="0" />
                     <xsd:element name="price_changes" type="typens:complexMultiArray" minOccurs="0" />
                 </xsd:sequence>
             </xsd:complexType>
