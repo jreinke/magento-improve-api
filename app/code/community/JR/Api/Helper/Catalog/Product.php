@@ -168,17 +168,6 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                     );
                 }
             }
-            
-            if($mainProduct->isObjectNew()) {
-            
-                if($mainProduct->isConfigurable()) {       
-                    $log_file = "/home/sourismi/magento_app/log/soap.log";
-                    file_put_contents($log_file, print_r(array('getSku' => $mainProduct->getSku()), true));
-                    file_put_contents($log_file, print_r(array('attributesData' => $attributesData), true), FILE_APPEND);
-                }
-                
-                $mainProduct->setConfigurableAttributesData($attributesData);
-            }
         }
 
         return $this;
