@@ -17,6 +17,23 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('sku', array('in' => (array) $simpleSkus))
                 ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                 ->getAllIds();
+            
+            
+            // Remove related products so we don't try to link products which are already linked
+            $related_products = array();
+            $conf = Mage::getModel('catalog/product_type_configurable')->setProduct($product);
+            $col = $conf->getUsedProductCollection()->addAttributeToSelect('*')->addFilterByRequiredOptions();
+            foreach($col as $simple_product){
+                $related_products[] = $simple_product->getId();
+            }
+            
+            for ($i = 0; $i < count($usedProductIds); $i++) {
+                if(in_array($usedProductIds[$i], $related_products)) {
+                    unset($usedProductIds[$i]);
+                }
+            }
+            
+            
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
                     $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configAttributes);
