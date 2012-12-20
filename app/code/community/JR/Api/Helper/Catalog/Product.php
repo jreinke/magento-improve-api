@@ -168,6 +168,8 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                     );
                 }
             }
+            
+            $mainProduct->setConfigurableAttributesData($attributesData);
         }
 
         return $this;
