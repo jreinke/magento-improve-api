@@ -119,38 +119,35 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         if (!$mainProduct->isConfigurable() || empty($simpleProductIds)) {
             return $this;
         }
-
+        
         $mainProduct->setConfigurableProductsData(array_flip($simpleProductIds));
+		
         $productType = $mainProduct->getTypeInstance(true);
         $productType->setProduct($mainProduct);
-
-        if(!empty($configAttributes)) {
-            $attributeIds = array();
-            foreach ($productType->getSetAttributes() as $attribute) {
-                if ($productType->canUseAttribute($attribute) && in_array($attribute->getAttributeCode(), $configAttributes)) {
-                    $attributeIds[] = $attribute->getAttributeId();
-                }
-            }
-            $productType->setUsedProductAttributeIds($attributeIds);
-            $attributesData = $productType->getConfigurableAttributesAsArray();
-        } else {
-            $attributesData = $productType->getConfigurableAttributesAsArray();
+		
+		// Get attributes already associated to this product
+        $used_attr_codes = array();
+        foreach($productType->getConfigurableAttributesAsArray($mainProduct) as $attr){
+            $used_attr_codes[] = $attr['attribute_code'];
         }
-        if (empty($attributesData)) {
-            // Auto generation if configurable product has no attribute
-            $attributeIds = array();
-            foreach ($productType->getSetAttributes() as $attribute) {
-                if ($productType->canUseAttribute($attribute)) {
-                    $attributeIds[] = $attribute->getAttributeId();
-                }
+		
+		// Add only the new attributes to this product
+        $new_attr_ids = array();
+        foreach($productType->getSetAttributes() as $attribute) {
+            if($productType->canUseAttribute($attribute)) {
+				if(!empty($configAttributes) &&
+				    in_array($attribute->getAttributeCode(), $configAttributes) &&
+				   !in_array($attribute->getAttributeCode(), $used_attr_codes)) {
+                	
+					$new_attr_ids[] = $attribute->getAttributeId();
+				}
             }
-            $productType->setUsedProductAttributeIds($attributeIds);
-            $attributesData = $productType->getConfigurableAttributesAsArray();
         }
-
-        $products = Mage::getModel('catalog/product')->getCollection()
-            ->addIdFilter($simpleProductIds);
-
+        $productType->setUsedProductAttributeIds($new_attr_ids);
+        $attributesData = $productType->getConfigurableAttributesAsArray(); 
+        
+		// Update 'association' attributes
+        $products = Mage::getModel('catalog/product')->getCollection()->addIdFilter($simpleProductIds);
         if (count($products)) {
             foreach ($attributesData as &$attribute) {
                 $attribute['label'] = $attribute['frontend_label'];
@@ -183,7 +180,11 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
             
             $mainProduct->setConfigurableAttributesData($attributesData);
         }
-
+		// 
+		// $log_file = "/home/sourismini/magento_app/prod/var/log/soap.log";
+		// $log = print_r(array_flip($simpleProductIds), true);
+		// file_put_contents($log_file, $log, FILE_APPEND);
+		//         
         return $this;
     }
 }
