@@ -1,12 +1,12 @@
 <?php
 
-class JR_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Api
+class Bubble_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Api
 {
     public function create($type, $set, $sku, $productData, $store = null)
     {
         // Allow attribute set name instead of id
         if (is_string($set) && !is_numeric($set)) {
-            $set = Mage::helper('jr_api')->getAttributeSetIdByName($set);
+            $set = Mage::helper('bubble_api')->getAttributeSetIdByName($set);
         }
 
         return parent::create($type, $set, $sku, $productData, $store);
@@ -17,7 +17,7 @@ class JR_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Api
         /* @var $product Mage_Catalog_Model_Product */
 
         if (isset($productData['categories'])) {
-            $categoryIds = Mage::helper('jr_api/catalog_product')
+            $categoryIds = Mage::helper('bubble_api/catalog_product')
                 ->getCategoryIdsByNames((array) $productData['categories']);
             if (!empty($categoryIds)) {
                 $productData['categories'] = array_unique($categoryIds);
@@ -39,7 +39,7 @@ class JR_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Api
         }
 
         foreach ($productData as $code => $value) {
-            $productData[$code] = Mage::helper('jr_api/catalog_product')
+            $productData[$code] = Mage::helper('bubble_api/catalog_product')
                 ->getOptionKeyByLabel($code, $value);
         }
 
@@ -48,7 +48,7 @@ class JR_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Api
         if (isset($productData['associated_skus'])) {
             $simpleSkus = $productData['associated_skus'];
             $priceChanges = isset($productData['price_changes']) ? $productData['price_changes'] : array();
-            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
+            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
         }
     }
 }

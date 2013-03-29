@@ -18,7 +18,7 @@ Install with [modgit](https://github.com/jreinke/modgit):
 
     $ cd /path/to/magento
     $ modgit init
-    $ modgit -e README.md clone jr-api https://github.com/jreinke/magento-improve-api.git
+    $ modgit -e README.md clone bubble-api https://github.com/jreinke/magento-improve-api.git
 
 or download package manually:
 
@@ -28,4 +28,4 @@ or download package manually:
 
 ## How to associate simple products to configurable/grouped product
 
-I wrote an article for this, [click here](http://www.johannreinke.com/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
+I wrote an article for this, [click here](http://bubbleco.de/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).

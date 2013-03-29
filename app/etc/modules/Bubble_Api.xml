@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <JR_Api>
+        <Bubble_Api>
             <active>true</active>
             <codePool>community</codePool>
-        </JR_Api>
+        </Bubble_Api>
     </modules>
 </config>

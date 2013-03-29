@@ -1,12 +1,12 @@
 <?php
 
-class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api_V2
+class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api_V2
 {
     public function create($type, $set, $sku, $productData, $store = null)
     {
         // Allow attribute set name instead of id
         if (is_string($set) && !is_numeric($set)) {
-            $set = Mage::helper('jr_api')->getAttributeSetIdByName($set);
+            $set = Mage::helper('bubble_api')->getAttributeSetIdByName($set);
         }
 
         return parent::create($type, $set, $sku, $productData, $store);
@@ -17,7 +17,7 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
         /* @var $product Mage_Catalog_Model_Product */
 
         if (property_exists($productData, 'categories')) {
-            $categoryIds = Mage::helper('jr_api/catalog_product')
+            $categoryIds = Mage::helper('bubble_api/catalog_product')
                 ->getCategoryIdsByNames((array) $productData->categories);
             if (!empty($categoryIds)) {
                 $productData->categories = array_unique($categoryIds);
@@ -31,20 +31,20 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
                 if ($singleDataExists) {
                     foreach ($productData->additional_attributes->single_data as $_attribute) {
                         $_attrCode = $_attribute->key;
-                        $productData->$_attrCode = Mage::helper('jr_api/catalog_product')
+                        $productData->$_attrCode = Mage::helper('bubble_api/catalog_product')
                             ->getOptionKeyByLabel($_attrCode, $_attribute->value);
                     }
                 }
                 if ($multiDataExists) {
                     foreach ($productData->additional_attributes->multi_data as $_attribute) {
                         $_attrCode = $_attribute->key;
-                        $productData->$_attrCode = Mage::helper('jr_api/catalog_product')
+                        $productData->$_attrCode = Mage::helper('bubble_api/catalog_product')
                             ->getOptionKeyByLabel($_attrCode, $_attribute->value);
                     }
                 }
             } else {
                 foreach ($productData->additional_attributes as $_attrCode => $_value) {
-                    $productData->$_attrCode = Mage::helper('jr_api/catalog_product')
+                    $productData->$_attrCode = Mage::helper('bubble_api/catalog_product')
                         ->getOptionKeyByLabel($_attrCode, $_value);
                 }
             }
@@ -77,7 +77,7 @@ class JR_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api
                     $priceChanges = $productData->price_changes;
                 }
             }
-            Mage::helper('jr_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
+            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
         }
     }
 }

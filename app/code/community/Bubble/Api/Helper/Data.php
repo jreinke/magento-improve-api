@@ -1,6 +1,6 @@
 <?php
 
-class JR_Api_Helper_Data extends Mage_Core_Helper_Abstract
+class Bubble_Api_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
      * @param string $attrSetName

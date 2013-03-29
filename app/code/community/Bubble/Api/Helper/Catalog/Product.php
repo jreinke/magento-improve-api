@@ -1,14 +1,14 @@
 <?php
 
-class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
+class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
 {
-    const CATEGORIES_SEPARATOR_PATH_XML = 'api/config/categories_separator';
+    const CATEGORIES_SEPARATOR_PATH_XML = 'bubble_api/config/categories_separator';
 
     /**
      * @param Mage_Catalog_Model_Product $product
      * @param array $simpleSkus
      * @param array $priceChanges
-     * @return JR_Api_Helper_Catalog_Product
+     * @return Bubble_Api_Helper_Catalog_Product
      */
     public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array())
     {
@@ -100,7 +100,7 @@ class JR_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
      * @param Mage_Catalog_Model_Product $mainProduct
      * @param array $simpleProductIds
      * @param array $priceChanges
-     * @return JR_Api_Helper_Catalog_Product
+     * @return Bubble_Api_Helper_Catalog_Product
      */
     protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array())
     {

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <bubble translate="label">
+            <label>Bubble Code</label>
+            <sort_order>1000</sort_order>
+        </bubble>
+    </tabs>
+    <sections>
+        <bubble_api translate="label" module="bubble_api">
+            <label>Bubble Api</label>
+            <tab>bubble</tab>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <hint>
+                    <frontend_model>bubble_api/adminhtml_system_config_fieldset_hint</frontend_model>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </hint>
+                <config translate="label">
+                    <label>General Settings</label>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <categories_separator translate="label">
+                            <label>Categories Separator</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </categories_separator>
+                    </fields>
+                </config>
+            </groups>
+        </bubble_api>
+    </sections>
+</config>
