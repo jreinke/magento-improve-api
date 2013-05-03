@@ -12,20 +12,20 @@ It allows you to:
 
 ## Installation
 
-### Magento CE 1.6+
+### Magento CE 1.6.x, 1.7.x
 
 Install with [modgit](https://github.com/jreinke/modgit):
 
     $ cd /path/to/magento
     $ modgit init
-    $ modgit -e README.md clone bubble-api https://github.com/jreinke/magento-improve-api.git
+    $ modgit clone bubble-api https://github.com/jreinke/magento-improve-api.git
 
 or download package manually:
 
-* Download latest version [here](https://github.com/jreinke/magento-improve-api/downloads)
+* Download latest version [here](https://github.com/jreinke/magento-improve-api/archive/master.zip)
 * Unzip in Magento root folder
-* Clean cache
+* Clear cache
 
 ## How to associate simple products to configurable/grouped product
 
-I wrote an article for this, [click here](http://bubbleco.de/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
+Please refer to [this article](http://www.bubblecode.net/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
