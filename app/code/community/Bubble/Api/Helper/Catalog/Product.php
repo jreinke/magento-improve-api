@@ -10,7 +10,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
      * @param array $priceChanges
      * @return Bubble_Api_Helper_Catalog_Product
      */
-    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array())
+    public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array(), $configurableAttributes = array())
     {
         if (!empty($simpleSkus)) {
             $usedProductIds = Mage::getModel('catalog/product')->getCollection()
@@ -19,7 +19,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->getAllIds();
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
-                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges);
+                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configurableAttributes);
                 } elseif ($product->isGrouped()) {
                     $relations = array_fill_keys($usedProductIds, array('qty' => 0, 'position' => 0));
                     $product->setGroupedLinkData($relations);
@@ -102,7 +102,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
      * @param array $priceChanges
      * @return Bubble_Api_Helper_Catalog_Product
      */
-    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array())
+    protected function _initConfigurableAttributesData(Mage_Catalog_Model_Product $mainProduct, $simpleProductIds, $priceChanges = array(), $configurableAttributes = array())
     {
         if (!$mainProduct->isConfigurable() || empty($simpleProductIds)) {
             return $this;
@@ -123,6 +123,13 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
             }
             $productType->setUsedProductAttributeIds($attributeIds);
             $attributesData = $productType->getConfigurableAttributesAsArray();
+        }
+        if (!empty($configurableAttributes)){
+            foreach ($attributesData as $idx => $val) {
+                if (!in_array($val['attribute_id'], $configurableAttributes)) {
+                    unset($attributesData[$idx]);
+                }
+            }
         }
 
         $products = Mage::getModel('catalog/product')->getCollection()
