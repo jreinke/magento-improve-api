@@ -77,7 +77,11 @@ class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product
                     $priceChanges = $productData->price_changes;
                 }
             }
-            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
+            $configurableAttributes = array();
+            if (property_exists($productData, 'configurable_attributes')) {
+                $configurableAttributes = $productData->configurable_attributes;
+            }
+            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges, $configurableAttributes);
         }
     }
 }
