@@ -13,10 +13,18 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
     public function associateProducts(Mage_Catalog_Model_Product $product, $simpleSkus, $priceChanges = array(), $configurableAttributes = array())
     {
         if (!empty($simpleSkus)) {
-            $usedProductIds = Mage::getModel('catalog/product')->getCollection()
+            $newProductIds = Mage::getModel('catalog/product')->getCollection()
                 ->addFieldToFilter('sku', array('in' => (array) $simpleSkus))
                 ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                 ->getAllIds();
+
+            $oldProductIds = Mage::getModel('catalog/product_type_configurable')->setProduct($product)->getUsedProductCollection()
+                ->addAttributeToSelect('*')
+                ->addFilterByRequiredOptions()
+                ->getAllIds();
+
+            $usedProductIds = array_diff($newProductIds, $oldProductIds);
+
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
                     $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configurableAttributes);
