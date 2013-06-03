@@ -48,7 +48,8 @@ class Bubble_Api_Model_Catalog_Product_Api extends Mage_Catalog_Model_Product_Ap
         if (isset($productData['associated_skus'])) {
             $simpleSkus = $productData['associated_skus'];
             $priceChanges = isset($productData['price_changes']) ? $productData['price_changes'] : array();
-            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges);
+            $configurableAttributes = isset($productData['configurable_attributes']) ? $productData['configurable_attributes'] : array();
+            Mage::helper('bubble_api/catalog_product')->associateProducts($product, $simpleSkus, $priceChanges, $configurableAttributes);
         }
     }
 }
