@@ -1,5 +1,4 @@
 <?php
-
 class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product_Api_V2
 {
     public function create($type, $set, $sku, $productData, $store = null)
@@ -15,7 +14,6 @@ class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product
     protected function _prepareDataForSave($product, $productData)
     {
         /* @var $product Mage_Catalog_Model_Product */
-
         if (property_exists($productData, 'categories')) {
             $categoryIds = Mage::helper('bubble_api/catalog_product')
                 ->getCategoryIdsByNames((array) $productData->categories);
@@ -71,6 +69,7 @@ class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product
             $simpleSkus = (array) $productData->associated_skus;
             $priceChanges = array();
             if (property_exists($productData, 'price_changes')) {
+                $productData->price_changes = json_decode($productData->price_changes);
                 if (key($productData->price_changes) === 0) {
                     $priceChanges = $productData->price_changes[0];
                 } else {

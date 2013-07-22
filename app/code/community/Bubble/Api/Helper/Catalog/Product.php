@@ -1,5 +1,4 @@
 <?php
-
 class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
 {
     const CATEGORIES_SEPARATOR_PATH_XML = 'bubble_api/config/categories_separator';
@@ -17,14 +16,12 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->addFieldToFilter('sku', array('in' => (array) $simpleSkus))
                 ->addFieldToFilter('type_id', Mage_Catalog_Model_Product_Type::TYPE_SIMPLE)
                 ->getAllIds();
-
             $oldProductIds = Mage::getModel('catalog/product_type_configurable')->setProduct($product)->getUsedProductCollection()
                 ->addAttributeToSelect('*')
                 ->addFilterByRequiredOptions()
                 ->getAllIds();
 
             $usedProductIds = array_diff($newProductIds, $oldProductIds);
-
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
                     $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configurableAttributes);
@@ -115,12 +112,11 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         if (!$mainProduct->isConfigurable() || empty($simpleProductIds)) {
             return $this;
         }
-
+        $priceChanges = (array) $priceChanges;
         $mainProduct->setConfigurableProductsData(array_flip($simpleProductIds));
         $productType = $mainProduct->getTypeInstance(true);
         $productType->setProduct($mainProduct);
         $attributesData = $productType->getConfigurableAttributesAsArray();
-
         if (empty($attributesData)) {
             // Auto generation if configurable product has no attribute
             $attributeIds = array();
@@ -134,7 +130,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         }
         if (!empty($configurableAttributes)){
             foreach ($attributesData as $idx => $val) {
-                if (!in_array($val['attribute_id'], $configurableAttributes)) {
+                if (!in_array($val['attribute_id'], $configurableAttributes) && !in_array($val['attribute_code'], $configurableAttributes)) {
                     unset($attributesData[$idx]);
                 }
             }
@@ -157,6 +153,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                             ->getAttribute($attribute['attribute_code'])
                             ->getSource()
                             ->getOptionText($optionId);
+                        $priceChanges[$attributeCode] = (array)$priceChanges[$attributeCode];
                         if (isset($priceChanges[$attributeCode][$optionText])) {
                             if (false !== strpos($priceChanges[$attributeCode][$optionText], '%')) {
                                 $isPercent = 1;
