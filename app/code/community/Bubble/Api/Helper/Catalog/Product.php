@@ -134,7 +134,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         }
         if (!empty($configurableAttributes)){
             foreach ($attributesData as $idx => $val) {
-                if (!in_array($val['attribute_id'], $configurableAttributes)) {
+                if (!in_array($val['attribute_code'], $configurableAttributes)) {
                     unset($attributesData[$idx]);
                 }
             }
