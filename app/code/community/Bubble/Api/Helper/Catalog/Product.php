@@ -59,7 +59,6 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                     if (!empty($parentIds)) {
                         $collection->getSelect()->where('parent_id IN (?)', $parentIds);
                     }
-                    $parentIds = array();
                     if ($collection->count()) {
                         foreach ($collection as $category) {
                             $addCategories[] = (int) $category->getId();
@@ -68,6 +67,15 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                             }
                             $parentIds[] = $category->getId();
                         }
+                    } else {
+                        if ($level > 0) {
+                            $parentId = end($parentIds);
+                        } else {
+                            $parentId = Mage::app()->getWebsite(1)->getDefaultStore()->getRootCategoryId();
+                        }
+                        $newCategoryId = $this->createCategory($name, $parentId);
+                        $addCategories[] = $newCategoryId;
+                        $parentIds[] = $newCategoryId;
                     }
                 }
                 if (!empty($addCategories)) {
@@ -77,6 +85,24 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         }
 
         return !empty($categories) ? $categories : $categoryNames;
+    }
+
+    /**
+     * @param string $name
+     * @param int|string $parentId
+     * @return string
+     */
+    public function createCategory($name, $parentId)
+    {
+        $category = Mage::getModel('catalog/category');
+        $parentCategory = Mage::getModel('catalog/category')->load($parentId);
+
+        $category->setName($name)
+            ->setIsActive(1)
+            ->setPath($parentCategory->getPath());
+        $category->save();
+
+        return $category->getId();
     }
 
     /**
@@ -96,7 +122,33 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
             }
         }
 
+        if ($newOptionId = $this->createOption($attribute, $label)) {
+            return $newOptionId;
+        }
+
         return $label;
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
+     * @param string $label
+     * @return string|null
+     */
+    public function createOption(Mage_Catalog_Model_Resource_Eav_Attribute $attribute, $label)
+    {
+        $option = array(
+            'value' => array(
+                'option' => array($label)
+            )
+        );
+        $attribute->setOption($option);
+        $attribute->save();
+
+        $optionId = Mage::getModel('eav/entity_attribute_source_table')
+            ->setAttribute($attribute)
+            ->getOptionId($label);
+
+        return $optionId;
     }
 
     protected function _getCatagoriesSeparator()
@@ -134,7 +186,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
         }
         if (!empty($configurableAttributes)){
             foreach ($attributesData as $idx => $val) {
-                if (!in_array($val['attribute_id'], $configurableAttributes)) {
+                if (!in_array($val['attribute_code'], $configurableAttributes)) {
                     unset($attributesData[$idx]);
                 }
             }
