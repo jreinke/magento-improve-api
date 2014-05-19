@@ -122,7 +122,33 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
             }
         }
 
+        if ($newOptionId = $this->createOption($attribute, $label)) {
+            return $newOptionId;
+        }
+
         return $label;
+    }
+
+    /**
+     * @param Mage_Catalog_Model_Resource_Eav_Attribute $attribute
+     * @param string $label
+     * @return string|null
+     */
+    public function createOption(Mage_Catalog_Model_Resource_Eav_Attribute $attribute, $label)
+    {
+        $option = array(
+            'value' => array(
+                'option' => array($label)
+            )
+        );
+        $attribute->setOption($option);
+        $attribute->save();
+
+        $optionId = Mage::getModel('eav/entity_attribute_source_table')
+            ->setAttribute($attribute)
+            ->getOptionId($label);
+
+        return $optionId;
     }
 
     protected function _getCatagoriesSeparator()
