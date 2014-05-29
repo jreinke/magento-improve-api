@@ -23,7 +23,7 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
                 ->addFilterByRequiredOptions()
                 ->getAllIds();
 
-            $usedProductIds = array_diff($newProductIds, $oldProductIds);
+            $usedProductIds = array_unique(array_merge($newProductIds, $oldProductIds));
 
             if (!empty($usedProductIds)) {
                 if ($product->isConfigurable()) {
