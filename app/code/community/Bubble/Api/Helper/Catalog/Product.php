@@ -25,13 +25,13 @@ class Bubble_Api_Helper_Catalog_Product extends Mage_Core_Helper_Abstract
 
             $usedProductIds = array_diff($newProductIds, $oldProductIds);
 
-            if (!empty($usedProductIds)) {
-                if ($product->isConfigurable()) {
-                    $this->_initConfigurableAttributesData($product, $usedProductIds, $priceChanges, $configurableAttributes);
-                } elseif ($product->isGrouped()) {
-                    $relations = array_fill_keys($usedProductIds, array('qty' => 0, 'position' => 0));
-                    $product->setGroupedLinkData($relations);
-                }
+            if (!empty($newProductIds) && $product->isConfigurable()) {
+                $this->_initConfigurableAttributesData($product, $newProductIds, $priceChanges, $configurableAttributes);
+            }
+            
+            if (!empty($usedProductIds) && $product->isGrouped()) {
+                $relations = array_fill_keys($usedProductIds, array('qty' => 0, 'position' => 0));
+                $product->setGroupedLinkData($relations);
             }
         }
 
