@@ -1,0 +1,12 @@
+{
+    "name": "AmpersandHQ/magento-improve-api",
+    "description": "This extension improves default features of Magento SOAP API.",
+    "homepage": "https://github.com/AmpersandHQ/magento-improve-api",
+    "type": "magento-module",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://composer.ampersandweb.co.uk"
+        }
+    ]
+}
