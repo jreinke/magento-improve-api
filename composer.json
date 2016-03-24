@@ -1,12 +1,8 @@
 {
-    "name": "AmpersandHQ/magento-improve-api",
+    "name": "bubble/magento-improve-api",
     "description": "This extension improves default features of Magento SOAP API.",
-    "homepage": "https://github.com/AmpersandHQ/magento-improve-api",
     "type": "magento-module",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://composer.ampersandweb.co.uk"
-        }
-    ]
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "Enables the Bubble API Magento module to be installed using Composer."
+    }
 }
