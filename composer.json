@@ -1,0 +1,8 @@
+{
+    "name": "bubble/api",
+    "type": "magento-module",
+    "description": "Magento extension to improve some missing features of API",
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
