@@ -12,6 +12,11 @@
                     <element name="configurable_attributes" type="typens:ArrayOfString" minOccurs="0"/>
                     <element name="price_changes" type="typens:associativeArray" minOccurs="0" />
                 </all>
+            </complexType>  
+            <complexType name="catalogProductReturnEntity">
+                <all>
+                    <element name="associated_skus" type="typens:ArrayOfString" minOccurs="0"/>
+                </all>
             </complexType>
         </schema>
     </types>
