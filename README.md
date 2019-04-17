@@ -6,6 +6,7 @@ It allows you to:
 
 * Associate simple products to configurable or grouped product;
 * Retrieve simple products from configurable products;
+* Retrieve configurable attributes used in configurable products;
 * Specify category names rather than the ids;
 * Specify the name of the attribute set rather than the id;
 * Specify options labels rather than the ids;
