@@ -14,7 +14,7 @@ It allows you to:
 
 ## Installation
 
-### Magento CE 1.6.x, 1.7.x
+### Magento CE 1.6.x, 1.7.x (retrieval of simple products and configurable attributes worked on 1.5.x)
 
 Install with [modgit](https://github.com/jreinke/modgit):
 
@@ -35,4 +35,5 @@ Please refer to [this article](http://www.bubblecode.net/en/2012/04/20/magento-a
 ## How to retrieve simple products and used configurable attributes from configurable products
 
 Consume the "catalogProductInfo" method from the SOAP API on neither  V1 and V2 versions.
+
 The simple products list will be on the "associated_skus" attribute and the configurable attributes list will be on the "configurable_attributes" attribute.
