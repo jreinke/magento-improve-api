@@ -96,6 +96,12 @@ class Bubble_Api_Model_Catalog_Product_Api_V2 extends Mage_Catalog_Model_Product
                 $associated_skus[] = $used_product->getSku();
             }
             $result += ['associated_skus' => $associated_skus];
+            $configurable_attributes = array();
+            $_configurable_attributes = Mage::getModel('catalog/product_type_configurable')->getUsedProductAttributeIds($product);
+            foreach ($_configurable_attributes as $configurable_attribute) {
+                $configurable_attributes[] = Mage::getModel('eav/entity_attribute')->load($configurable_attribute)->getAttributeCode();
+            }
+            $result += ['configurable_attributes' => $configurable_attributes];
         }
         return $result;
     }
