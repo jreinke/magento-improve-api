@@ -31,7 +31,7 @@ or download package manually:
 
 Please refer to [this article](http://www.bubblecode.net/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
 
-## How to retrieve simple products from configurable products
+## How to retrieve simple products and used configurable attributes from configurable products
 
 Consume the "catalogProductInfo" method from the SOAP API on neither  V1 and V2 versions.
-The list will be on the "associated_skus" attribute
+The simple products list will be on the "associated_skus" attribute and the configurable attributes list will be on the "configurable_attributes" attribute.
