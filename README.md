@@ -5,6 +5,8 @@ This extension improves default features of Magento API.
 It allows you to:
 
 * Associate simple products to configurable or grouped product;
+* Retrieve simple products from configurable products;
+* Retrieve configurable attributes used in configurable products;
 * Specify category names rather than the ids;
 * Specify the name of the attribute set rather than the id;
 * Specify options labels rather than the ids;
@@ -12,7 +14,7 @@ It allows you to:
 
 ## Installation
 
-### Magento CE 1.6.x, 1.7.x
+### Magento CE 1.6.x, 1.7.x (retrieval of simple products and configurable attributes worked on 1.5.x)
 
 Install with [modgit](https://github.com/jreinke/modgit):
 
@@ -29,3 +31,9 @@ or download package manually:
 ## How to associate simple products to configurable/grouped product
 
 Please refer to [this article](http://www.bubblecode.net/en/2012/04/20/magento-api-associate-simple-products-to-configurable-or-grouped-product/).
+
+## How to retrieve simple products and used configurable attributes from configurable products
+
+Consume the "catalogProductInfo" method from the SOAP API on neither  V1 and V2 versions.
+
+The simple products list will be on the "associated_skus" attribute and the configurable attributes list will be on the "configurable_attributes" attribute.

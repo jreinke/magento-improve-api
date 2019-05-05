@@ -25,6 +25,11 @@
                     <xsd:element name="configurable_attributes" type="typens:ArrayOfString" minOccurs="0" />
                     <xsd:element name="price_changes" type="typens:complexMultiArray" minOccurs="0" />
                 </xsd:sequence>
+            </xsd:complexType>   
+            <xsd:complexType name="catalogProductReturnEntity">
+                <xsd:sequence>
+                    <xsd:element name="associated_skus" type="typens:ArrayOfString" minOccurs="0" />
+                </xsd:sequence>
             </xsd:complexType>
         </xsd:schema>
     </wsdl:types>
