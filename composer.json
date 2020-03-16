@@ -4,5 +4,6 @@
     "type": "magento-module",
     "suggest": {
         "magento-hackathon/magento-composer-installer": "Enables the Bubble API Magento module to be installed using Composer."
-    }
+    },
+    "abandoned": true
 }
